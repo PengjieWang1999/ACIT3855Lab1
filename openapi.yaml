@@ -1,0 +1,110 @@
+swagger: '2.0'
+info:
+  description: This is an API for humidity and temperature report
+  version: 1.0.0
+  title: humidity and temperature API
+
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+
+paths:
+  /report/humidity:
+    post:
+      summary: reports humidity reading
+      operationId: app.report_humidity
+      description: Stores a humidity reading
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: humidityReading
+        description: Humidity Reading
+        schema:
+          $ref: '#/definitions/HumidityReading'
+      responses:
+        201:
+          description: item created
+        400:
+          description: invalid input, object invalid
+
+  /report/temperature:
+    post:
+      summary: reports temperature reading
+      operationId: app.report_temperature
+      description: Stores a temperature reading
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: temperatureReading
+        description: Temperature Reading
+        schema:
+          $ref: '#/definitions/TemperatureReading'
+      responses:
+        201:
+          description: item created
+        400:
+          description: invalid input, object invalid
+
+definitions:
+  HumidityReading:
+    type: object
+    required:
+    - user_id
+    - device_id
+    - humidity
+    - timestamp
+    properties:
+      user_id:
+        type: string
+        format: uuid
+        example: d290f1ee-6c54-4b01-90e6-d701748f0851
+      device_id:
+        type: string
+        example: A12345
+      humidity:
+        type: integer
+        example: 91
+      timestamp:
+        type: string
+        format: date-time
+        example: 2016-08-29T09:12:33.001Z
+
+  TemperatureReading:
+    type: object
+    required:
+    - user_id
+    - device_id
+    - temperature
+    - timestamp
+    properties:
+      user_id:
+        type: string
+        format: uuid
+        example: d290f1ee-6c54-4b01-90e6-d701748f0851
+      device_id:
+        type: string
+        example: A12345
+      temperature:
+        $ref: '#/definitions/Temperature'
+      timestamp:
+        type: string
+        format: date-time
+        example: 2016-08-29T09:12:33.001Z
+
+  Temperature:
+      required:
+      - high
+      - low
+      properties:
+        high:
+          type: integer
+          example: 30
+        low:
+          type: integer
+          example: 10
